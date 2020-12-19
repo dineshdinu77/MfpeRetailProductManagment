@@ -1,0 +1,33 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: proceedtobuyservice-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ProceedToBuyService
+  template:
+    metadata:
+      labels:
+        app: ProceedToBuyService
+    spec:
+      containers:
+      - name: retailcartrepos
+        image: productcr.azurecr.io/retailcartrepos:latest
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+      - name: productsn
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: proceedtobuyservice
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: ProceedToBuyService
